@@ -1,0 +1,17 @@
+{
+  "generated_at": "2026-08-19T21:23:09.263095+00:00",
+  "files": {
+    "smart_meter.csv": {
+      "sha256": "1875fed14983834f0ac287d73682b60ec53119874e4af3fd9d1e7a454b42f666",
+      "size_bytes": 20370486
+    },
+    "weather.csv": {
+      "sha256": "f0accf758c231c4e7f284793a1ab4abdfed03a12f262e6590ba08ab5ed9b9018",
+      "size_bytes": 399177
+    },
+    "calendar.csv": {
+      "sha256": "8c73764b74202c04e6b65bdc0304014fd235b32fe78ccf0c870c20de1e891185",
+      "size_bytes": 9966
+    }
+  }
+}
