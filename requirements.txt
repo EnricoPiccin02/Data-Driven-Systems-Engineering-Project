@@ -1,0 +1,33 @@
+# Data engineering (Sprints 1-3)
+pandas>=2.2
+numpy==1.26.4
+scipy>=1.11
+requests>=2.31                  # Household dataset download, Open-Meteo API clients (historical + live)
+joblib>=1.3
+PyYAML>=6.0
+holidays>=0.101
+great-expectations==0.18.19     # Real data validation
+
+# ML engineering (Sprints 4-5)
+scikit-learn>=1.4               # LinearRegression, RandomForestRegressor, dataset utilities
+xgboost==3.0.3                  # Gradient boosting
+lightgbm>=4.3                   # Gradient boosting, histogram-based
+mlflow>=2.11                    # Experiment tracking + model registry frameworks
+shap==0.46.0                    # Explainability and feature importance
+matplotlib>=3.8                 # For SHAP summary plots
+
+# App engineering (Sprints 6-7)
+fastapi>=0.110
+pydantic>=2.6
+uvicorn>=0.29
+streamlit>=1.33
+altair==4.2.2
+streamlit-autorefresh>=1.0.1    # Real-time dashboard auto-refresh
+
+# MLOps (Sprint 8 + Refactoring)
+evidently==0.6.7                # Monitoring & Maintenance: Batch (windowed) Drift Detection
+river>=0.21                     # Online/streaming drift detection (ADWIN)
+
+# Testing
+pytest>=8.0
+httpx>=0.27                     # FastAPI TestClient dependency
