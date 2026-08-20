@@ -1,0 +1,80 @@
+{
+  "generated_at": "2026-08-19T21:23:28.653472+00:00",
+  "entity_keys": [
+    "household_id",
+    "timestamp"
+  ],
+  "target_column": "consumption_kwh",
+  "feature_columns": [
+    "temperature_c",
+    "humidity_pct",
+    "wind_speed_ms",
+    "day_of_week",
+    "is_real_meter_data",
+    "is_winsorised",
+    "was_missing",
+    "is_weekend",
+    "is_holiday",
+    "hour",
+    "minute",
+    "hour_sin",
+    "hour_cos",
+    "dow_sin",
+    "dow_cos",
+    "heating_degree",
+    "cooling_degree",
+    "lag_1",
+    "lag_2",
+    "lag_48",
+    "lag_336",
+    "roll_mean_48",
+    "roll_std_48",
+    "roll_mean_336",
+    "roll_std_336"
+  ],
+  "dtypes": {
+    "timestamp": "datetime64[ns]",
+    "consumption_kwh": "float64",
+    "temperature_c": "float64",
+    "humidity_pct": "float64",
+    "wind_speed_ms": "float64",
+    "day_of_week": "int32",
+    "is_real_meter_data": "bool",
+    "is_winsorised": "bool",
+    "was_missing": "bool",
+    "is_weekend": "int64",
+    "is_holiday": "int64",
+    "household_id": "object",
+    "hour": "int32",
+    "minute": "int32",
+    "hour_sin": "float64",
+    "hour_cos": "float64",
+    "dow_sin": "float64",
+    "dow_cos": "float64",
+    "heating_degree": "float64",
+    "cooling_degree": "float64",
+    "lag_1": "float64",
+    "lag_2": "float64",
+    "lag_48": "float64",
+    "lag_336": "float64",
+    "roll_mean_48": "float64",
+    "roll_std_48": "float64",
+    "roll_mean_336": "float64",
+    "roll_std_336": "float64"
+  },
+  "n_rows": 400800,
+  "config": {
+    "lag_steps": [
+      1,
+      2,
+      48,
+      336
+    ],
+    "rolling_windows": [
+      48,
+      336
+    ],
+    "random_seed": 42
+  },
+  "content_sha256": "9caf5fd29080938fb1a87875cd7f81567a3e9f830246ed4aa7a961552c74f7cb"
+}
