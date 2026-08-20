@@ -1,0 +1,157 @@
+{
+  "generated_at": "2026-08-19T21:23:09.065790+00:00",
+  "validation_engine": "great_expectations",
+  "suites": {
+    "smart_meter": [
+      {
+        "expectation": "expect_column_to_exist",
+        "column": "timestamp",
+        "severity": "CRITICAL",
+        "success": true,
+        "observed": "True",
+        "details": ""
+      },
+      {
+        "expectation": "expect_column_to_exist",
+        "column": "household_id",
+        "severity": "CRITICAL",
+        "success": true,
+        "observed": "True",
+        "details": ""
+      },
+      {
+        "expectation": "expect_column_to_exist",
+        "column": "consumption_kwh",
+        "severity": "CRITICAL",
+        "success": true,
+        "observed": "True",
+        "details": ""
+      },
+      {
+        "expectation": "expect_column_values_to_not_be_null",
+        "column": "consumption_kwh",
+        "severity": "WARN",
+        "success": true,
+        "observed": "369",
+        "details": ""
+      },
+      {
+        "expectation": "expect_column_values_to_be_between",
+        "column": "consumption_kwh",
+        "severity": "CRITICAL",
+        "success": false,
+        "observed": "3",
+        "details": ""
+      },
+      {
+        "expectation": "expect_compound_columns_to_be_unique",
+        "column": "timestamp,household_id",
+        "severity": "CRITICAL",
+        "success": false,
+        "observed": "384",
+        "details": ""
+      },
+      {
+        "expectation": "expect_timestamps_regular",
+        "column": "timestamp",
+        "severity": "WARN",
+        "success": true,
+        "observed": "n_gaps=0",
+        "details": "expected_freq=30min (plain-pandas check, not a GE expectation)"
+      }
+    ],
+    "weather": [
+      {
+        "expectation": "expect_column_to_exist",
+        "column": "timestamp",
+        "severity": "CRITICAL",
+        "success": true,
+        "observed": "True",
+        "details": ""
+      },
+      {
+        "expectation": "expect_column_values_to_be_between",
+        "column": "temperature_c",
+        "severity": "CRITICAL",
+        "success": true,
+        "observed": "0",
+        "details": ""
+      },
+      {
+        "expectation": "expect_column_values_to_not_be_null",
+        "column": "temperature_c",
+        "severity": "WARN",
+        "success": true,
+        "observed": "0",
+        "details": ""
+      },
+      {
+        "expectation": "expect_column_values_to_be_between",
+        "column": "humidity_pct",
+        "severity": "CRITICAL",
+        "success": true,
+        "observed": "0",
+        "details": ""
+      },
+      {
+        "expectation": "expect_column_values_to_be_between",
+        "column": "wind_speed_ms",
+        "severity": "CRITICAL",
+        "success": true,
+        "observed": "0",
+        "details": ""
+      }
+    ],
+    "calendar": [
+      {
+        "expectation": "expect_column_to_exist",
+        "column": "date",
+        "severity": "CRITICAL",
+        "success": true,
+        "observed": "True",
+        "details": ""
+      },
+      {
+        "expectation": "expect_column_values_to_be_unique",
+        "column": "date",
+        "severity": "CRITICAL",
+        "success": true,
+        "observed": "0",
+        "details": ""
+      },
+      {
+        "expectation": "expect_column_to_exist",
+        "column": "is_weekend",
+        "severity": "CRITICAL",
+        "success": true,
+        "observed": "True",
+        "details": ""
+      },
+      {
+        "expectation": "expect_column_to_exist",
+        "column": "is_holiday",
+        "severity": "CRITICAL",
+        "success": true,
+        "observed": "True",
+        "details": ""
+      }
+    ]
+  },
+  "summary": {
+    "smart_meter": {
+      "n_expectations": 7,
+      "n_critical_failures": 2,
+      "n_warn_failures": 0
+    },
+    "weather": {
+      "n_expectations": 5,
+      "n_critical_failures": 0,
+      "n_warn_failures": 0
+    },
+    "calendar": {
+      "n_expectations": 4,
+      "n_critical_failures": 0,
+      "n_warn_failures": 0
+    }
+  }
+}
