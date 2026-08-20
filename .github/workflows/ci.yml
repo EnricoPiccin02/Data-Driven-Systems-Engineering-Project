@@ -28,6 +28,39 @@ jobs:
       - run: pip install -r requirements.txt
       - run: pytest -q
 
+  data-pipeline-smoke-test:
+    needs: unit-tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - run: python3 scripts/run_pipeline.py
+
+  ml-kernel:
+    needs: data-pipeline-smoke-test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - run: python3 scripts/run_pipeline.py
+      - name: Train + compare candidate models, fail build if champion doesn't beat baseline
+        run: |
+          python3 -c "
+          from src.ml.train import train_and_compare
+          import sys
+          results = train_and_compare()
+          champion = results['champion']
+          improvement = results[champion]['improvement_vs_baseline_mae_pct']
+          print(f'Champion {champion}: {improvement:.1f}% MAE improvement vs baseline')
+          sys.exit(0 if improvement > 0 else 1)
+          "
+
   docker-build:
     needs: unit-tests
     runs-on: ubuntu-latest
