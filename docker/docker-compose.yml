@@ -1,0 +1,93 @@
+version: "3.9"
+
+services:
+  pipeline:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    volumes:
+      - ../data:/app/data
+      - ../reports:/app/reports
+      - ../mlruns:/app/mlruns
+      - ../mlflow.db:/app/mlflow.db
+
+  tests:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    command: ["pytest", "-q"]
+    volumes:
+      - ../data:/app/data
+      - ../mlruns:/app/mlruns
+      - ../mlflow.db:/app/mlflow.db
+
+  # ML kernel
+  train:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    command: ["python3", "scripts/train_models.py"]
+    volumes:
+      - ../data:/app/data
+      - ../mlruns:/app/mlruns
+      - ../mlflow.db:/app/mlflow.db
+      - ../model_registry_pickles:/app/model_registry_pickles
+    depends_on:
+      pipeline:
+        condition: service_completed_successfully
+
+  # Standalone promotion, independent of a full training run
+  promote:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    command: ["python3", "scripts/promote_champion.py"]
+    volumes:
+      - ../mlruns:/app/mlruns
+      - ../mlflow.db:/app/mlflow.db
+      - ../model_registry_pickles:/app/model_registry_pickles
+    depends_on:
+      train:
+        condition: service_completed_successfully
+
+  # Prediction service
+  api:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.api
+    ports:
+      - "8000:8000"
+    volumes:
+      - ../mlruns:/app/mlruns
+      - ../mlflow.db:/app/mlflow.db
+      - ../model_registry_pickles:/app/model_registry_pickles
+    depends_on:
+      promote:
+        condition: service_completed_successfully
+
+  # Dashboard (talks to `api` over the Compose network)
+  dashboard:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.dashboard
+    ports:
+      - "8501:8501"
+    environment:
+      - API_BASE_URL=http://api:8000
+    depends_on:
+      api:
+        condition: service_started
+
+  # Scheduled drift check (run on-demand here)
+  drift-check:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    command: ["python3", "scripts/run_drift_check.py"]
+    volumes:
+      - ../data:/app/data
+      - ../mlruns:/app/mlruns
+      - ../mlflow.db:/app/mlflow.db
+    depends_on:
+      pipeline:
+        condition: service_completed_successfully
