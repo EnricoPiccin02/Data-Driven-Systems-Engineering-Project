@@ -5,6 +5,9 @@ on:
     branches: [main, develop]
   pull_request:
     branches: [main, develop]
+  schedule:
+    - cron: "0 3 * * *"   # Nightly automated drift-check + auto-retrain
+  workflow_dispatch:      # Allow manual triggering from the Actions tab
 
 jobs:
   lint:
@@ -82,10 +85,30 @@ jobs:
         with:
           python-version: "3.11"
       - run: pip install -r requirements.txt
-      - name: Import-check the API module
-        run: python3 -c "import src.app.api"
+      - name: Import-check the API and dashboard modules
+        run: |
+          python3 -c "import src.app.api"
+          python3 -m py_compile src/app/dashboard.py
       - name: Run API integration tests (FastAPI TestClient)
         run: pytest -q tests/test_api.py
+
+  drift-check:
+    needs: ml-kernel
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - run: python3 scripts/run_pipeline.py
+      - run: python3 scripts/train_models.py
+      - name: Drift check (report-only on push/PR)
+        if: github.event_name != 'schedule'
+        run: python3 scripts/run_drift_check.py --no-auto-retrain
+      - name: Drift check with auto-retrain + promotion (nightly cron only)
+        if: github.event_name == 'schedule'
+        run: python3 scripts/run_drift_check.py
 
   docker-build:
     needs: unit-tests
@@ -96,3 +119,5 @@ jobs:
         run: docker build -f docker/Dockerfile -t energy-forecast-pipeline:ci .
       - name: Build API image
         run: docker build -f docker/Dockerfile.api -t energy-forecast-api:ci .
+      - name: Build dashboard image
+        run: docker build -f docker/Dockerfile.dashboard -t energy-forecast-dashboard:ci .
