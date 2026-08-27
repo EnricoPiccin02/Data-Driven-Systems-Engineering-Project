@@ -14,8 +14,8 @@ on:
     branches: [main, develop]
   pull_request:
     branches: [main, develop]
-  schedule:
-    - cron: "0 3 * * *"   # Nightly automated drift-check + auto-retrain
+  # schedule:
+  #  - cron: "0 3 * * *"   # Nightly automated drift-check + auto-retrain
   workflow_dispatch:      # Allow manual triggering from the Actions tab
 
 env:
